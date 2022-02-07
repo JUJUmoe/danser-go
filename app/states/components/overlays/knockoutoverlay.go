@@ -11,7 +11,7 @@ import (
 	"github.com/wieku/danser-go/app/settings"
 	"github.com/wieku/danser-go/app/skin"
 	"github.com/wieku/danser-go/app/states/components/common"
-	"github.com/wieku/danser-go/app/utils"
+	//"github.com/wieku/danser-go/app/utils"
 	"github.com/wieku/danser-go/framework/assets"
 	"github.com/wieku/danser-go/framework/bass"
 	"github.com/wieku/danser-go/framework/graphics/batch"
@@ -477,7 +477,7 @@ func (overlay *KnockoutOverlay) DrawHUD(batch *batch.QuadBatch, colors []color2.
 	//cL := strconv.FormatInt(highestCombo, 10)
 	cP := strconv.FormatInt(int64(highestPP), 10)
 	cA := strconv.FormatInt(int64(highestACC), 10)
-	cS := overlay.font.GetWidthMonospaced(scl, utils.Humanize(highestScore))
+	//cS := overlay.font.GetWidthMonospaced(scl, utils.Humanize(highestScore))
 
 	accuracy1 := cA + ".00% " + cP + ".00pp "
 	nWidth := overlay.font.GetWidthMonospaced(scl, accuracy1)
@@ -485,7 +485,7 @@ func (overlay *KnockoutOverlay) DrawHUD(batch *batch.QuadBatch, colors []color2.
 	maxLength := 3*scl + nWidth + maxPlayerWidth
 
 	xSlideLeft := (overlay.fade.GetValue() - 1.0) * maxLength
-	xSlideRight := (1.0 - overlay.fade.GetValue()) * (cS + overlay.font.GetWidthMonospaced(scl, fmt.Sprintf("%dx ", highestCombo)) + 0.5*scl)
+	//xSlideRight := (1.0 - overlay.fade.GetValue()) * (cS + overlay.font.GetWidthMonospaced(scl, fmt.Sprintf("%dx ", highestCombo)) + 0.5*scl)
 
 	rowPosY := math.Max((overlay.ScaledHeight-cumulativeHeight)/2, scl)
 	// Draw textures like keys, grade, hit values
@@ -510,16 +510,16 @@ func (overlay *KnockoutOverlay) DrawHUD(batch *batch.QuadBatch, colors []color2.
 
 		batch.SetColor(float64(colors[rep.oldIndex].R), float64(colors[rep.oldIndex].G), float64(colors[rep.oldIndex].B), alpha*player.fade.GetValue())
 
-		for j := 0; j < 2; j++ {
-			batch.SetSubScale(scl*0.8/2, scl*0.8/2)
-			batch.SetTranslation(vector.NewVec2d((float64(j)+0.5)*scl+xSlideLeft, rowBaseY))
+		//for j := 0; j < 4; j++ {
+		//	batch.SetSubScale(scl*0.8/2, scl*0.8/2)
+		//	batch.SetTranslation(vector.NewVec2d((float64(j)+0.5)*scl+xSlideLeft, rowBaseY))
 
-			if controller.GetClick(rep.oldIndex, j) || controller.GetClick(rep.oldIndex, j+2) {
-				batch.DrawUnit(*overlay.ButtonClicked)
-			} else {
-				batch.DrawUnit(*overlay.Button)
-			}
-		}
+		//	if controller.GetClick(rep.oldIndex, j) {
+		//		batch.DrawUnit(*overlay.ButtonClicked)
+		//	} else {
+		//		batch.DrawUnit(*overlay.Button)
+		//	}
+		//}
 
 		width := overlay.font.GetWidth(scl, r.Name)
 
@@ -530,13 +530,13 @@ func (overlay *KnockoutOverlay) DrawHUD(batch *batch.QuadBatch, colors []color2.
 		}
 
 		batch.SetSubScale(scl*0.85/2, scl*0.85/2)
-		batch.SetTranslation(vector.NewVec2d(2*scl+scl*0.1+nWidth+xSlideLeft, rowBaseY))
+		batch.SetTranslation(vector.NewVec2d(4*scl+scl*0.1+nWidth+xSlideLeft, rowBaseY))
 
-		if r.Grade != osu.NONE {
-			gText := strings.ToLower(strings.ReplaceAll(osu.GradesText[r.Grade], "SS", "X"))
-			text := skin.GetTexture("ranking-" + gText + "-small")
-			batch.DrawUnit(*text)
-		}
+		//if r.Grade != osu.NONE {
+		//	gText := strings.ToLower(strings.ReplaceAll(osu.GradesText[r.Grade], "SS", "X"))
+		//	text := skin.GetTexture("ranking-" + gText + "-small")
+		//	batch.DrawUnit(*text)
+		//}
 
 		batch.SetColor(1, 1, 1, alpha*player.fade.GetValue()*player.fadeHit.GetValue())
 		//batch.SetSubScale(scl*0.9/2*player.scaleHit.GetValue(), scl*0.9/2*player.scaleHit.GetValue())
@@ -566,7 +566,7 @@ func (overlay *KnockoutOverlay) DrawHUD(batch *batch.QuadBatch, colors []color2.
 			if tex != "" {
 				hitTexture := skin.GetTexture(tex)
 				batch.SetSubScale(scl*0.8/2*player.scaleHit.GetValue()*(float64(hitTexture.Width)/float64(hitTexture.Height)), scl*0.8/2*player.scaleHit.GetValue())
-				batch.SetTranslation(vector.NewVec2d(3*scl+width+nWidth+scl*(float64(hitTexture.Width)/float64(hitTexture.Height))*0.5+xSlideLeft, rowBaseY))
+				batch.SetTranslation(vector.NewVec2d(5*scl+width+nWidth+scl*(float64(hitTexture.Width)/float64(hitTexture.Height))*0.5+xSlideLeft, rowBaseY))
 				batch.DrawUnit(*hitTexture)
 			}
 		}
@@ -587,26 +587,27 @@ func (overlay *KnockoutOverlay) DrawHUD(batch *batch.QuadBatch, colors []color2.
 
 		batch.SetColor(1, 1, 1, alpha*player.fade.GetValue())
 
-		accuracy := fmt.Sprintf("%"+strconv.Itoa(len(cA)+3)+".2f%% %"+strconv.Itoa(len(cP)+3)+".2fpp", r.Accuracy /*r.Combo*/, overlay.players[r.Name].ppDisp.GetValue())
+		//accuracy := fmt.Sprintf("%"+strconv.Itoa(len(cA)+3)+".2f%% %"+strconv.Itoa(len(cP)+3)+".2fpp", r.Accuracy /*r.Combo*/, overlay.players[r.Name].ppDisp.GetValue())
 		//_ = cL
 
-		overlay.font.DrawOrigin(batch, 2*scl+xSlideLeft, rowBaseY, vector.CentreLeft, scl, true, accuracy)
+		//overlay.font.DrawOrigin(batch, 4*scl+xSlideLeft, rowBaseY, vector.CentreLeft, scl, true, accuracy)
 
-		scorestr := utils.Humanize(int64(player.scoreDisp.GetValue()))
+		//scorestr := utils.Humanize(int64(player.scoreDisp.GetValue()))
 
-		sWC := fmt.Sprintf("%dx ", overlay.players[r.Name].sCombo)
+		//sWC := fmt.Sprintf("%dx ", overlay.players[r.Name].sCombo)
 
-		overlay.font.DrawOrigin(batch, overlay.ScaledWidth-cS-0.5*scl+xSlideRight, rowBaseY, vector.CentreRight, scl, true, sWC)
-		overlay.font.DrawOrigin(batch, overlay.ScaledWidth-0.5*scl+xSlideRight, rowBaseY, vector.CentreRight, scl, true, scorestr)
+		//overlay.font.DrawOrigin(batch, overlay.ScaledWidth-cS-0.5*scl+xSlideRight, rowBaseY, vector.CentreRight, scl, true, sWC)
+		//overlay.font.DrawOrigin(batch, overlay.ScaledWidth-0.5*scl+xSlideRight, rowBaseY, vector.CentreRight, scl, true, scorestr)
 
 		batch.SetColor(float64(colors[rep.oldIndex].R), float64(colors[rep.oldIndex].G), float64(colors[rep.oldIndex].B), alpha*player.fade.GetValue())
-		overlay.font.DrawOrigin(batch, 3*scl+nWidth+xSlideLeft, rowBaseY, vector.CentreLeft, scl, false, r.Name)
+		//overlay.font.DrawOrigin(batch, 5*scl+nWidth+xSlideLeft, rowBaseY, vector.CentreLeft, scl, false, r.Name)
+		overlay.font.DrawOrigin(batch, scl, rowBaseY, vector.CentreLeft, scl, false, r.Name)
 		width := overlay.font.GetWidth(scl, r.Name)
 
 		batch.SetColor(1, 1, 1, alpha*player.fade.GetValue())
 
 		if r.Mods != "" {
-			overlay.font.DrawOrigin(batch, 3*scl+width+nWidth+xSlideLeft, rowBaseY+ascScl, vector.BottomLeft, scl*0.8, false, "+"+r.Mods)
+			overlay.font.DrawOrigin(batch, scl+width, rowBaseY+ascScl, vector.BottomLeft, scl*0.8, false, "+"+r.Mods)
 		}
 	}
 }
